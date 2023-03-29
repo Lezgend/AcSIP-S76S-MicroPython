@@ -1,27 +1,29 @@
 """
-Warayut Poomiwatracanont
-Date : 25/3/2022
-Run on ESP32 with AcSIP S76S LoRa Module
+Class to interact with the AcSIP S76S LoRa Module
+Write in MicroPython by Warayut Poomiwatracanont MAR 2023
+Test on ESP32 with AcSIP S76S LoRa Module
 """
 from machine import UART,Pin
-import time, sys
+from binascii import hexlify
+import time, sys, gc
 
-class AcSIPS76S:
+class AcSIP_S76S:
     def __init__(self, uart_id, dclass, port_num, data):
         self.uart_id = uart_id
-        self.dclass = dclass.upper()
+        if len(dclass) > 1:
+            self.dclass = "A"
+        else: self.dclass = dclass.upper()
         self.port_num = port_num
-        self.data = data
+        self.data = hexlify(data).decode("utf-8") 
        
-        # if UART1 can not work properly, please use UART2
-        self.uart = UART(uart_id, baudrate=115200, bits=8, parity=None, stop=1, timeout=500)
+        # If UART1 can not work properly, please use UART2 instead.
+        self.uart = UART(uart_id, baudrate=115200, bits=8, parity=None, stop=1, timeout=200)
 
-    # Send mac Command function
+    # Send mac Command function.
     def sendCommand(self, Command):
         rstr = ""
         print("Command: {0}".format(Command))
         self.uart.write("{0}".format(Command))
-        time.sleep(0.2)
         rstr = self.uart.read()
         if rstr is None:
             rstr = "None"
@@ -53,7 +55,7 @@ class AcSIPS76S:
         print("Setting up device class")
         self.sendCommand("mac set_class {}".format(self.dclass))
         
-        # Save Config
+        # Save the Config
         self.sendCommand("mac save")
         print("Config Module Successfully!\n")
 
@@ -137,12 +139,15 @@ class AcSIPS76S:
             
 if __name__ == "__main__":
     
-    _uart = int(input("Which UART ID do you using: "))
-    _dclass = str(input("Which class do you prefer? A, C: "))
-    _port_num = str(input("Which port number do you want to use (1-223): "))
-    _data = str(input("Data to send (HEX): "))
+    gc.enable()
+    gc.collect()
+    
+    _uart = int(input("Which UART ID do you using ?: "))
+    _dclass = str(input("Which class do you prefer ? (A, C): "))
+    _port_num = str(input("Which port number do you want to use ? (1-223): "))
+    _data = str(input("Data to send (String): "))
 
-    S76S = AcSIPS76S(uart_id=_uart, dclass=_dclass, port_num=_port_num, data=_data)
+    S76S = AcSIP_S76S(uart_id=_uart, dclass=_dclass, port_num=_port_num, data=_data)
     
     try:
         while True:
