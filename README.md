@@ -17,7 +17,7 @@ A very simple library and useful for AcSIP S76S LoRa Module on ESP32 or ESP8266 
 Ref: [AcSIP Product brief 📑](https://www.acsip.com.tw/index.php?action=products-detail&fid1=19&fid2=&fid3=&id=79)
 
 # Command Set
-[S76S/S78S Commands Set Reference v1.6.5](https://edit.wpgdadawant.com/uploads/news_file/program/2019/35461/tech_files/S7678S_Commands_Set_Reference_1.6.5.pdf)
+[S76S/S78S Commands Set Reference v1.6.5 📓](https://edit.wpgdadawant.com/uploads/news_file/program/2019/35461/tech_files/S7678S_Commands_Set_Reference_1.6.5.pdf)
 
 # Usage
 
@@ -84,6 +84,8 @@ Roger That!
 
 Starting Reset Factory
 Command: sip reset
+
+>> Ok
                              
      ___        _____ _ ____ 
     /   | _____/ ___/(_) __ \
@@ -131,18 +133,15 @@ Command: mac set_rx2 2 923200000
 
 >> Ok
 
-Setting up device keys
-Command: mac set_appkey a8e69894dcde18e57829bdc05bcc2834
-
->> Ok
-
 Setting up device class
 Command: mac set_class C
 
 >> Ok
 
 Command: mac save
-None
+
+>> Ok
+
 Config Module Successfully!
 
 Use CTRL-C to stop sending
@@ -157,22 +156,17 @@ Roger That!
 ----------For OTAA----------
 Command: mac get_deveui
 
+>> 9c65************
+
+Command: mac set_appkey 5c608d4ad87a5d90dd203ccb83af3df2
+
 >> Ok
 
->> 9c65XXXXXXXXXXXX
+DevEUI for OTAA Athentication: 9c65************
 
-Command: mac get_appkey
+AppKey for OTAA Athentication: 5c608d4ad87a5d90dd203ccb83af3df2
 
->> a8e698********************cc2834
-
-----------For ABP----------
-Command: mac get_appskey
-
->> a8e698********************cc2834
-
-Command: mac get_nwkskey
-
->> a8e698********************cc2834
+---------------------------
 
 Use CTRL-C to stop sending
 ```
